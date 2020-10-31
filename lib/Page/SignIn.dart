@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    checkAuth(context);
+    //checkAuth(context);
   }
 
   @override
@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => MainPage()));
       
-      checkAuth(context); // add here
+     // checkAuth(context); // add here
     }).catchError((error) {
       print(error.message);
       scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -191,12 +191,12 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  Future checkAuth(BuildContext context) async {
-    final User user = _auth.currentUser;
-    if (user != null) {
-      print("Already singed-in with");
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MainPage()));
-    }
-  }
+  // Future checkAuth(BuildContext context) async {
+  //   FirebaseUser user = await _auth.currentUser();
+  //   if (user != null) {
+  //     print("Already singed-in with");
+  //     Navigator.pushReplacement(
+  //         context, MaterialPageRoute(builder: (context) => MainPage()));
+  //   }
+  // }
  }

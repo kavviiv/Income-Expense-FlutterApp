@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inandex/Page/Income.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +13,7 @@ class AddInPage extends StatefulWidget {
 }
 
 class _AddInPageState extends State<AddInPage> {
+  TextEditingController incomeController = TextEditingController();
   DateTime selectedDate = DateTime.now();
 
   Future<void> _selectDate(BuildContext context) async {
@@ -32,6 +35,7 @@ class _AddInPageState extends State<AddInPage> {
     "งานพิเศษ",
     "อื่น ๆ",
   ];
+  final firestoreInstance = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +97,7 @@ class _AddInPageState extends State<AddInPage> {
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
+                  controller: incomeController,
                   decoration: InputDecoration(
                     labelText: "กรุณาใส่จำนวนเงิน",
                     hintText: "จำนวนเงิน",
@@ -118,31 +123,7 @@ class _AddInPageState extends State<AddInPage> {
             ),
           ),
           SizedBox(height: 20),
-          Center(
-            child: Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    width: 390,
-                    height: 40,
-                    child: RaisedButton(
-                      onPressed: () => _selectDate(context),
-                      child: Text(
-                        'เลือกวันที่ต้องการบันทึก',
-                        style: TextStyle(fontSize: 18, color: Colors.black),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  Text(
-                    "${selectedDate.toLocal()}".split(' ')[0],
-                    style: TextStyle(fontSize: 22, color: Colors.black),
-                  ),
-                ],
-              ),
-            ),
-          ),
+       
           SizedBox(height: 20),
           Center(
             child: Container(
@@ -153,9 +134,7 @@ class _AddInPageState extends State<AddInPage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(1.0),
                       side: BorderSide(color: Colors.black)),
-                  onPressed: () => {
-                    savetoDb()
-                  },
+                  onPressed: () => {_onPressed()},
                   color: Colors.black,
                   child: Text(
                     'บันทึก',
@@ -167,24 +146,34 @@ class _AddInPageState extends State<AddInPage> {
       ),
     );
   }
-}
 
-savetoDb() {
-  
+  _onPressed() {
+
+
+
+    String money = incomeController.text.trim();
+                   
+    var firebaseUser =  FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection(firebaseUser.uid).add(
+       {"ประเภท": "", "จำนวนเงิน": money , "วันที่บันทึก" : DateTime.now()} 
+    ).then((value) {
+      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return IncomePage();
+                      }));
+      print("success");
+    });
+  }
 }
 
 class choiceChipWidget extends StatefulWidget {
   final List<String> reportList;
-
   choiceChipWidget(this.reportList);
-
   @override
   _choiceChipWidgetState createState() => new _choiceChipWidgetState();
 }
-
 class _choiceChipWidgetState extends State<choiceChipWidget> {
   String selectedChoice = "";
-
   _buildChoiceList() {
     List<Widget> choices = List();
     widget.reportList.forEach((item) {

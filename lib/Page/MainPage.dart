@@ -9,21 +9,13 @@ import 'package:inandex/constants.dart';
 
 class MainPage extends StatefulWidget {
   final FirebaseUser user;
-  
-
-  MainPage({ this.user,Key key}) : super(key: key);
+  MainPage({this.user, Key key}) : super(key: key);
   @override
   _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  
-
-
-
-  
-
   @override
   initState() {
     super.initState();
@@ -38,7 +30,7 @@ class _MainPageState extends State<MainPage> {
           child: Container(
             child: Padding(
               padding: const EdgeInsets.only(left: 15.0, top: 10),
-              child: Text("Welcome, " ,
+              child: Text("Welcome, ",
                   style: TextStyle(
                     fontSize: 25,
                   )),
@@ -157,10 +149,6 @@ class _MainPageState extends State<MainPage> {
         ));
   }
 
-
-
-
-
   void logout(BuildContext context) {
     _auth.signOut();
     Navigator.pushAndRemoveUntil(
@@ -168,8 +156,4 @@ class _MainPageState extends State<MainPage> {
         MaterialPageRoute(builder: (context) => LoginPage()),
         ModalRoute.withName('/'));
   }
-
-
-  
-
 }

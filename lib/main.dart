@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inandex/Page/AddIncome.dart';
+import 'package:inandex/Page/Income.dart';
 import 'package:inandex/Page/MainPage.dart';
 import 'package:inandex/Page/SignIn.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SignUpPage(),
+      home: IncomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
