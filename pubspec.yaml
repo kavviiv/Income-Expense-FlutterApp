@@ -32,6 +32,8 @@ dependencies:
   firebase_database: ^4.2.0
   cloud_firestore: ^0.14.2
   bubble_bottom_bar: ^1.2.0
+  chips_choice: ^2.0.1
+  charts_flutter: ^0.9.0
 
 
   # The following adds the Cupertino Icons font to your application.

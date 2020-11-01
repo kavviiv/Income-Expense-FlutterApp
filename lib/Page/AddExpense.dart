@@ -1,25 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:inandex/Page/Income.dart';
 import 'package:flutter/services.dart';
-import 'package:chips_choice/chips_choice.dart';
-import 'package:async/async.dart';
+import 'package:inandex/Page/Expense.dart';
 import 'package:intl/intl.dart';
 
-
-class AddInPage extends StatefulWidget {
+class AddExpense extends StatefulWidget {
   @override
-  _AddInPageState createState() => _AddInPageState();
-  bool isDelete = true;
-  bool isSelected = false;
+  _AddExpenseState createState() => _AddExpenseState();
 }
 
-class _AddInPageState extends State<AddInPage> with TickerProviderStateMixin {
+class _AddExpenseState extends State<AddExpense> with TickerProviderStateMixin {
   int _selectedIndex;
-  List<String> _options = ['เงินเดือน', 'งานพิเศษ', 'ขายของ', 'อื่นๆ'];
+  List<String> _options = ['ค่าห้อง','ค่าอาหาร', 'ค่าเดินทาง', 'ของใช้', 'อื่นๆ'];
 
   Widget _buildChips() {
     List<Widget> chips = new List();
@@ -100,7 +93,7 @@ class _AddInPageState extends State<AddInPage> with TickerProviderStateMixin {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'เลือกประเภทของรายรับ',
+                    'เลือกประเภทของรายจ่าย',
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 24.0,
@@ -223,8 +216,8 @@ class _AddInPageState extends State<AddInPage> with TickerProviderStateMixin {
       var firebaseUser = FirebaseAuth.instance.currentUser;
       firestoreInstance
           .collection(firebaseUser.uid)
-          .doc("รายรับ")
-          .collection("รายรับ")
+          .doc("รายจ่าย")
+          .collection("รายจ่าย")
           .add({"ประเภท": ty, "จำนวนเงิน": money, "when": datte}).then((value) {
         showAlertDialog(context);
         print("success");
@@ -242,8 +235,8 @@ class _AddInPageState extends State<AddInPage> with TickerProviderStateMixin {
       var firebaseUser = FirebaseAuth.instance.currentUser;
       firestoreInstance
           .collection(firebaseUser.uid)
-          .doc("รายรับ")
-          .collection("รายรับ")
+          .doc("รายจ่าย")
+          .collection("รายจ่าย")
           .add({"ประเภท": ty, "จำนวนเงิน": money, "when": datte}).then((value) {
         showAlertDialog(context);
         print("success");
@@ -260,8 +253,8 @@ class _AddInPageState extends State<AddInPage> with TickerProviderStateMixin {
       var firebaseUser = FirebaseAuth.instance.currentUser;
       firestoreInstance
           .collection(firebaseUser.uid)
-          .doc("รายรับ")
-          .collection("รายรับ")
+          .doc("รายจ่าย")
+          .collection("รายจ่าย")
           .add({"ประเภท": ty, "จำนวนเงิน": money, "when": datte}).then((value) {
         showAlertDialog(context);
         print("success");
@@ -278,8 +271,8 @@ class _AddInPageState extends State<AddInPage> with TickerProviderStateMixin {
       var firebaseUser = FirebaseAuth.instance.currentUser;
       firestoreInstance
           .collection(firebaseUser.uid)
-          .doc("รายรับ")
-          .collection("รายรับ")
+          .doc("รายจ่าย")
+          .collection("รายจ่าย")
           .add({"ประเภท": ty, "จำนวนเงิน": money, "when": datte}).then((value) {
         showAlertDialog(context);
         print("success");
@@ -299,7 +292,7 @@ showAlertDialog(BuildContext context) {
     child: Text("ตกลง"),
     onPressed: () {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return IncomePage();
+        return ExpensePage();
       }));
     },
   );

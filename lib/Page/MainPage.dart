@@ -1,26 +1,43 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:inandex/Page/Expense.dart';
 import 'package:inandex/Page/Income.dart';
 import 'package:inandex/Page/SignIn.dart';
+import 'package:inandex/Page/InChart.dart';
 import 'package:inandex/widget/menu_card.dart';
 import 'package:inandex/constants.dart';
 
 class MainPage extends StatefulWidget {
-  final FirebaseUser user;
-  MainPage({this.user, Key key}) : super(key: key);
+  var firebaseUser = FirebaseAuth.instance.currentUser;
+
+  MainPage({this.firebaseUser, Key key}) : super(key: key);
   @override
   _MainPageState createState() => _MainPageState();
-}
+}  
+var firebaseUser = FirebaseAuth.instance.currentUser.uid;
 
+ final databaseReference = FirebaseDatabase.instance.reference().child("user").child(firebaseUser).child("User");
 class _MainPageState extends State<MainPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final firestoreInstance = FirebaseFirestore.instance;
+  var firebaseUser = FirebaseAuth.instance.currentUser;
+  String amm = "" ;
+  //final databaseReference = FirebaseDatabase.instance.reference().child("user").reference().child("User");
   @override
   initState() {
     super.initState();
+     readData();
   }
 
+ readData(){
+  databaseReference.once().then((DataSnapshot snapshot) {
+    print('Data : ${snapshot.value}');
+    String amm = snapshot.value["Name"];
+  });
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +47,7 @@ class _MainPageState extends State<MainPage> {
           child: Container(
             child: Padding(
               padding: const EdgeInsets.only(left: 15.0, top: 10),
-              child: Text("Welcome, ",
+              child: Text("Welcome, " ,
                   style: TextStyle(
                     fontSize: 25,
                   )),
@@ -78,7 +95,14 @@ class _MainPageState extends State<MainPage> {
                             MenuCard(
                               title: "รายจ่าย",
                               svgSrc: "assets/icons/expense.svg",
-                              press: () {},
+                              press: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) {
+                                    return ExpensePage();
+                                  }),
+                                );
+                              },
                             ),
                             MenuCard(
                               title: "กราฟสรุป \n รายรับ",
@@ -87,7 +111,7 @@ class _MainPageState extends State<MainPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) {
-                                    return LoginPage();
+                                    return IncomeChart();
                                   }),
                                 );
                               },
@@ -95,7 +119,14 @@ class _MainPageState extends State<MainPage> {
                             MenuCard(
                               title: "กราฟสรุป \n รายจ่าย",
                               svgSrc: "assets/icons/chart.svg",
-                              press: () {},
+                              press: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) {
+                                    return IncomeChart();
+                                  }),
+                                );
+                              },
                             ),
                           ])),
                       // Container(

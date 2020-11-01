@@ -240,11 +240,12 @@ class _SignUpPageState extends State<SignUpPage> {
 final FirebaseAuth auth = FirebaseAuth.instance;
 
 void writeData() {
+    var firebaseUser = FirebaseAuth.instance.currentUser;
     String email = emailController.text.trim();
     String userName = usernameController.text.trim();
     final User user = auth.currentUser;
     final uid = user.uid;
-     db.child('User').set({
+     db.child(uid).child('User').set({
       'Name':userName,
       'Email':email
     });

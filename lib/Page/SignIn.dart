@@ -13,13 +13,14 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  var firebaseUser = FirebaseAuth.instance.currentUser;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   @override
   void initState() {
     super.initState();
-    //checkAuth(context);
+    checkAuth(context);
   }
 
   @override
@@ -178,11 +179,13 @@ class _LoginPageState extends State<LoginPage> {
             email: emailController.text.trim(),
             password: passwordController.text.trim())
         .then((user) {
+           checkAuth(context);
           Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => MainPage()));
-      
-     // checkAuth(context); // add here
-    }).catchError((error) {
+     // checkAuth(context);
+     // add here
+    }
+    ).catchError((error) {
       print(error.message);
       scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(error.message, style: TextStyle(color: Colors.white)),
@@ -191,12 +194,11 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  // Future checkAuth(BuildContext context) async {
-  //   FirebaseUser user = await _auth.currentUser();
-  //   if (user != null) {
-  //     print("Already singed-in with");
-  //     Navigator.pushReplacement(
-  //         context, MaterialPageRoute(builder: (context) => MainPage()));
-  //   }
-  // }
+  Future checkAuth(BuildContext context) async {
+    if (firebaseUser != null) {
+      print("Already singed-in with");
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => MainPage()));
+    }
+  }
  }
