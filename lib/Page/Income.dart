@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,17 +10,22 @@ import 'package:intl/intl.dart';
 
 
 class IncomePage extends StatefulWidget {
+  
   @override
   _IncomePageState createState() => _IncomePageState();
 }
 
 class _IncomePageState extends State<IncomePage> {
+  
   var firebaseUser = FirebaseAuth.instance.currentUser;
   final firestoreInstance = FirebaseFirestore.instance;
 
   void initState() {
     super.initState();
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +124,12 @@ class _IncomePageState extends State<IncomePage> {
                       );
                     });
               },
-            )));
+            ),
+            
+            
+            
+            
+            ));
   }
 }
 

@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:inandex/Page/AllChart.dart';
+import 'package:inandex/Page/ExChart.dart';
 import 'package:inandex/Page/Expense.dart';
 import 'package:inandex/Page/Income.dart';
 import 'package:inandex/Page/SignIn.dart';
@@ -16,28 +18,40 @@ class MainPage extends StatefulWidget {
   MainPage({this.firebaseUser, Key key}) : super(key: key);
   @override
   _MainPageState createState() => _MainPageState();
-}  
+}
+
 var firebaseUser = FirebaseAuth.instance.currentUser.uid;
 
- final databaseReference = FirebaseDatabase.instance.reference().child("user").child(firebaseUser).child("User");
+final databaseReference = FirebaseDatabase.instance
+    .reference()
+    .child("user")
+    .child(firebaseUser)
+    .child("User");
+
 class _MainPageState extends State<MainPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
   var firebaseUser = FirebaseAuth.instance.currentUser;
-  String amm = "" ;
+  String amm = "";
   //final databaseReference = FirebaseDatabase.instance.reference().child("user").reference().child("User");
   @override
   initState() {
     super.initState();
-     readData();
+    readData();
   }
 
- readData(){
-  databaseReference.once().then((DataSnapshot snapshot) {
-    print('Data : ${snapshot.value}');
-    String amm = snapshot.value["Name"];
-  });
-}
+  void readData() {
+    databaseReference.once().then((DataSnapshot snapshot) {
+      String tempTotal = snapshot.value["Name"];
+      setState(() {
+        String total = tempTotal;
+        debugPrint(total.toString());
+      });
+      print('Data : ${snapshot.value["Name"]}');
+      String amm = snapshot.value["Name"];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,10 +60,10 @@ class _MainPageState extends State<MainPage> {
           shape: const CircularNotchedRectangle(),
           child: Container(
             child: Padding(
-              padding: const EdgeInsets.only(left: 15.0, top: 10),
-              child: Text("Welcome, " ,
+              padding: const EdgeInsets.only(left: 10.0, top: 10),
+              child: Text('Welcome $amm',
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 20,
                   )),
             ),
             height: 60.0,
@@ -60,7 +74,7 @@ class _MainPageState extends State<MainPage> {
           onPressed: () {
             logout(context);
           },
-          child: Icon(Icons.block),
+          child: Icon(Icons.people),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         backgroundColor: Colors.grey[250],
@@ -123,56 +137,75 @@ class _MainPageState extends State<MainPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) {
-                                    return IncomeChart();
+                                    return ExCahart();
                                   }),
                                 );
                               },
                             ),
                           ])),
-                      // Container(
-                      //     child: Container(
-                      //   padding: EdgeInsets.only(top: 2),
-                      //   child: Text('กราฟสรุปรายรับ - รายจ่าย',
-                      //       style: TextStyle(
-                      //           fontSize: 23, fontWeight: FontWeight.bold)),
-                      //   alignment: Alignment.bottomCenter,
-                      // )),
+                      Container(
+                        height: 295,
+                        child: Center(
+                          
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 20.0),
+                            child: Stack(children: <Widget>[
+                              GestureDetector(
+                              onTap: () {
+                                  Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) {
+                                    return AllChart();
+                                  }),
+                                );
 
-                      Stack(children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(bottom: 45),
-                          child: Container(
-                            padding: EdgeInsets.only(top: 20),
-                            child: Image(
-                              image: AssetImage('assets/images/pie.png'),
-                              width: 5,
-                              height: 5,
+           
+
+           
+                              },
                             ),
-                          ),
-                          width: 390,
-                          height: 190,
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(13),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 11.0,
-                                offset: const Offset(0.0, 10.0),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20.0),
+                                child: Container(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: Container(
+                                    padding: EdgeInsets.only(bottom: 45),
+                                    width: 490,
+                                    height: 190,
+                                    decoration: new BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(13),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 11.0,
+                                          offset: const Offset(0.0, 0.0),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Image(
+                                      image: AssetImage('assets/images/pie.png'),
+                                      width: 5,
+                                      height: 5,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ],
+                              Container(
+                                height: 200,
+                                  child: Container(
+                                padding: EdgeInsets.only(top: 15),
+                                child: Text('กราฟสรุปรายรับ - รายจ่าย',
+                                    style: TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.bold)),
+                                alignment: Alignment.bottomCenter,
+                              )),
+                            ]),
                           ),
                         ),
-                        Container(
-                            child: Container(
-                          padding: EdgeInsets.only(top: 150),
-                          child: Text('กราฟสรุปรายรับ - รายจ่าย',
-                              style: TextStyle(
-                                  fontSize: 23, fontWeight: FontWeight.bold)),
-                          alignment: Alignment.bottomCenter,
-                        )),
-                      ])
+                      )
                     ]),
               ),
             ),

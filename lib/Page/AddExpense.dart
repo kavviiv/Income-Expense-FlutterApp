@@ -211,7 +211,7 @@ class _AddExpenseState extends State<AddExpense> with TickerProviderStateMixin {
       final String formatted = formatter.format(now);
       final String datte = formatted;
       print(datte);
-      String ty = "เงินเดือน";
+      String ty = "ค่าห้อง";
       String money = incomeController.text.trim();
       var firebaseUser = FirebaseAuth.instance.currentUser;
       firestoreInstance
@@ -230,7 +230,7 @@ class _AddExpenseState extends State<AddExpense> with TickerProviderStateMixin {
       final String formatted = formatter.format(now);
       final String datte = formatted;
       print(datte);
-      String ty = "งานพิเศษ";
+      String ty = "ค่าอาหาร";
       String money = incomeController.text.trim();
       var firebaseUser = FirebaseAuth.instance.currentUser;
       firestoreInstance
@@ -248,7 +248,7 @@ class _AddExpenseState extends State<AddExpense> with TickerProviderStateMixin {
       final String formatted = formatter.format(now);
       final String datte = formatted;
       print(datte);
-      String ty = "ขายของ";
+      String ty = "ค่าเดินทาง";
       String money = incomeController.text.trim();
       var firebaseUser = FirebaseAuth.instance.currentUser;
       firestoreInstance
@@ -266,6 +266,24 @@ class _AddExpenseState extends State<AddExpense> with TickerProviderStateMixin {
       final String formatted = formatter.format(now);
       final String datte = formatted;
       print(datte);
+      String ty = "ของใช้";
+      String money = incomeController.text.trim();
+      var firebaseUser = FirebaseAuth.instance.currentUser;
+      firestoreInstance
+          .collection(firebaseUser.uid)
+          .doc("รายจ่าย")
+          .collection("รายจ่าย")
+          .add({"ประเภท": ty, "จำนวนเงิน": money, "when": datte}).then((value) {
+        showAlertDialog(context);
+        print("success");
+      });
+    }
+        if (_selectedIndex == 4) {
+      final DateTime now = DateTime.now();
+      final DateFormat formatter = DateFormat('yyyy-MM-dd');
+      final String formatted = formatter.format(now);
+      final String datte = formatted;
+      print(datte);
       String ty = "อื่นๆ";
       String money = incomeController.text.trim();
       var firebaseUser = FirebaseAuth.instance.currentUser;
@@ -278,6 +296,7 @@ class _AddExpenseState extends State<AddExpense> with TickerProviderStateMixin {
         print("success");
       });
     }
+
  
   }
 }
