@@ -65,7 +65,7 @@ class _AllChartState extends State<AllChart>  {
       dataMap: dataMap,
       animationDuration: Duration(milliseconds: 800),
       chartLegendSpacing: _chartLegendSpacing,
-      chartRadius: MediaQuery.of(context).size.width / 5.0 > 500
+      chartRadius: MediaQuery.of(context).size.width / 5.0 > 650
           ? 300
           : MediaQuery.of(context).size.width / 3.2,
       colorList: colorList,
